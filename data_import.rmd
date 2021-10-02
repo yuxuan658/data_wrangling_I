@@ -1,0 +1,20 @@
+---
+title: "Data Import"
+output: github_document
+---
+
+```{r setup} 
+# above: name the code chunk
+
+library(tidyverse)
+```
+
+
+## Read in some data
+1. Read Data: start from **project folder**, then to go to **data** folder, then open the data file.
+
+Read in the litters dataset.
+```{r}
+
+```
+
