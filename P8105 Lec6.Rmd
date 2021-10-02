@@ -7,7 +7,7 @@ output: github_document
 1. dplyr package: manage data, included in library(tidyverse).
 1) start with data frame and return in data frame 
 
-```{r}
+```{r message=FALSE}
 library(tidyverse)
 ```
 
@@ -103,4 +103,19 @@ filter(litters_df, gd_of_birth == 20 | group == "Con7")
 # %in%: the values in either one row or the other.
 filter(litters_df, group %in% c("Con7", "Con8")) #the rows that groups in either "Con7" or "Con8", will be selected.
 
+```
+
+4. drop missing values   
+```{r}
+# drop all the missing values in the column `gd0_weight`, and keep everything else.
+drop_na(litters_df, gd0_weight)
+```
+
+### Mutate
+1. Modify the existing variables or create new variables:   
+ - Add or change the columns
+```{r}
+mutate(litters_df, 
+       weight_change = gd18_weight - gd0_weight, # add a new column equals to gd18_weight - gd0_weight
+       group = str_to_lower(group)) # Modify `group` variable and change everything in "group" column to lowercase 
 ```
