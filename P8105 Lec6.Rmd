@@ -1,0 +1,66 @@
+---
+title: "Data manipulation"
+output: github_document
+---
+##Lec6 code
+
+1. dplyr package: manage data, included in library(tidyverse).
+1) start with data frame and return in data frame 
+
+```{r}
+library(tidyverse)
+```
+
+### import some data
+```{r}
+litters_df = read.csv("./data/FAS_litters.csv")
+litters_df = janitor::clean_names(litters_df)
+```
+ - 'janitor::clean_names()' always comes after import dataframe.  
+ 
+### _`select`_
+
+1. Choose some columns and not others
+```{r}
+select(litters_df, group, litter_number)
+select(litters_df, group, gd0_weight, gd18_weight)
+```
+
+
+```{r}
+# select every column between gd0_weight and gd_of_birth `:` : 
+select(litters_df, group, gd0_weight:gd_of_birth) 
+
+#get rid of the column: litter_number, and keep everything others:
+select(litters_df, -litter_number) 
+
+```
+
+2. renaming columns
+```{r}
+#select the `group` and `litter_number` columns; and rename `group` column to 'GROUP' and `litter_number` to `LITTer_NUmbe`
+select(litters_df, GROUP = group, LITTer_NUmber = litter_number) 
+
+#or keep every columns, just rename the specific column.
+rename(litters_df, GROUP = group)
+```
+
+3. select helpers
+```{r}
+#select everything which names are started by "pups"
+select(litters_df, group, starts_with("pups"))
+```
+
+```{r}
+#select `litter_number` to the beginning of the dataframe and keep everything else
+select(litters_df, litter_number, everything()) 
+# or
+relocate(litters_df, litter_number) #relocate `litter_number` to the beginning of the dataframe and keep everything else
+```
+
+```{r}
+# in HW
+select(litters_df, group) 
+pull(litters_df, group) # vector stored in the column.
+```
+
