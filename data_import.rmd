@@ -2,6 +2,7 @@
 title: "Data Import"
 output: github_document
 ---
+# Lecture 4 code
 
 ```{r setup} 
 # above: name the code chunk
@@ -11,10 +12,41 @@ library(tidyverse)
 
 
 ## Read in some data
+
 1. Read Data: start from **project folder**, then to go to **data** folder, then open the data file.
-
-Read in the litters dataset.
 ```{r}
+litters_df = read_csv("./data/FAS_litters.csv")  # ".": start from here (project folder), "/": go to
 
+#Always followup step: 
+litters_df = janitor::clean_names(litters_df) #load "janitor" package, then use "clean_name()" function
 ```
 
+2. Always follow up by janitor::clean_names():
+janitor::clean_names: clean up variable names after importing data. Doing so will take whatever the column names are and convert them to lower snake case.
+
+## Take a look at the data
+
+1. Printing in the console.
+```{r}
+litters_df
+```
+2. 
+```{r}
+head(litters_df) #show first 6 rows of the dataframe
+tail(litters_df) #show the 6 rows of the dataframe
+```
+3. 
+```{r}
+skimr::skim(litters_df) 
+#tells missing values, min, max, histograms, etc.
+
+```
+4. use view(datafram) function in the _console_ to open the file in R studio.
+
+ - "character (chr)": the column that mix characters and numbers.
+ - "double": a particular kind of _number_ in computer programming.
+ 
+## options to read_csv
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv", skip = 10, col_names = FALSE) #skip first 10 rows, and don't show the column names
+```
