@@ -188,3 +188,8 @@ mlb_df = read_excel("./data/mlb11.xlsx", range = "A1:F7")
 library(haven)
 pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
 ```
+
+## Comparison with Base R
+
+`read.csv` vs `read_csv`? Never ever use `read.csv` !!! - `read.csv` is
+the most racent version of R, which is easier to manage the data
