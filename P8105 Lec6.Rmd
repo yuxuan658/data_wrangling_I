@@ -18,16 +18,16 @@ litters_df = janitor::clean_names(litters_df)
 ```
  - 'janitor::clean_names()' always comes after import dataframe.  
  
-### _`select`_
+### _`select`_ : operate on columns
 
 1. Choose some columns and not others
-```{r}
+```{r eval = FALSE}
 select(litters_df, group, litter_number)
 select(litters_df, group, gd0_weight, gd18_weight)
 ```
 
 
-```{r}
+```{r eval = FALSE}
 # select every column between gd0_weight and gd_of_birth `:` : 
 select(litters_df, group, gd0_weight:gd_of_birth) 
 
@@ -36,8 +36,8 @@ select(litters_df, -litter_number)
 
 ```
 
-2. renaming columns
-```{r}
+2. Renaming columns
+```{r eval = FALSE}
 #select the `group` and `litter_number` columns; and rename `group` column to 'GROUP' and `litter_number` to `LITTer_NUmbe`
 select(litters_df, GROUP = group, LITTer_NUmber = litter_number) 
 
@@ -46,21 +46,61 @@ rename(litters_df, GROUP = group)
 ```
 
 3. select helpers
-```{r}
+```{r eval = FALSE}
 #select everything which names are started by "pups"
 select(litters_df, group, starts_with("pups"))
 ```
 
-```{r}
+```{r eval = FALSE}
 #select `litter_number` to the beginning of the dataframe and keep everything else
 select(litters_df, litter_number, everything()) 
 # or
 relocate(litters_df, litter_number) #relocate `litter_number` to the beginning of the dataframe and keep everything else
 ```
 
-```{r}
-# in HW
+4. `select()` vs. `pull()`
+```{r eval = FALSE}
+#select vectors with seperate rows 
 select(litters_df, group) 
-pull(litters_df, group) # vector stored in the column.
+
+#select vectors and store them tnto one column.
+pull(litters_df, group) 
 ```
 
+
+### _`filter`_: operate on rows   
+ - Need to give conditions: TRUE/FALSE
+1. One conditions: 
+```{r}
+# keep everything else columns, but where gd_of_birth = 20, make sure two "=="
+filter(litters_df, gd_of_birth == 20) 
+
+# keep everything else columns, but where gd0_weight <= 34
+filter(litters_df, gd0_weight <= 34)
+
+# keep everything else columns, but where pup_survive not equal to 4
+filter(litters_df, !(pups_survive == 4)) 
+#or
+filter(litters_df, pups_survive != 4) 
+
+# keep everything else columns, but where groups are not Con7
+filter(litters_df, !(group == "Con7")) 
+```
+
+2. follow two conditions:
+```{r}
+#two conditions need to be follow
+filter(litters_df, gd_of_birth == 20, group == "Con7") 
+#two conditions need to be follow; "," and "&" has the same functions
+filter(litters_df, gd_of_birth == 20 & group == "Con7") 
+```
+
+3. either one of the conditions will be followed
+```{r}
+# the rows that either "gd_of_birth == 20" or "group =="Con7"" will be selected
+filter(litters_df, gd_of_birth == 20 | group == "Con7") 
+
+# %in%: the values in either one row or the other.
+filter(litters_df, group %in% c("Con7", "Con8")) #the rows that groups in either "Con7" or "Con8", will be selected.
+
+```
