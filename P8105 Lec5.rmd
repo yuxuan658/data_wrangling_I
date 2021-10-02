@@ -1,0 +1,108 @@
+---
+title: "Data Import"
+output: github_document
+---
+
+# Lecture 5
+
+```{r setup} 
+# name the code chunk as "setup"
+library(tidyverse)
+```
+
+
+## Read in some data
+
+1. Read Data: start from **project folder**, then to go to **data** folder, then open the data file.   
+ - Hence, make sure to save the data files in the same directory or sub-directory of the project.
+ 
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv")  
+       # ".": start from here (project folder), "/": go to
+
+#Always followup step: 
+litters_df = janitor::clean_names(litters_df) #load "janitor" package, then use "clean_name()" function
+```
+ -  ~	Home directory   
+    .	Current working directory   
+    ..	One directory up from current working directory   
+    ../..	Two directories up from current working directory   
+
+2. REMEMBER: Always follow up by janitor::clean_names():
+1) janitor::clean_names: clean up variable names after importing data. Doing so will take whatever the column names are and convert them to lower snake cases.
+2) The `package::function` syntax: use a function from a package without loading the whole library.
+
+## Take a look at the data
+
+1. Printing in the console.
+```{r}
+litters_df
+```
+
+2. 
+```{r}
+head(litters_df) #show first 6 rows of the dataframe
+tail(litters_df) #show the 6 rows of the dataframe
+```
+
+3. 
+```{r}
+skimr::skim(litters_df) 
+#tells missing values, min, max, histograms, etc.
+```
+
+4. use `view(data frame)` function in the _console_ to open the file in R studio.   
+1) "character (chr)": the column that mix characters and numbers.   
+2) "double": a particular kind of _number_ in computer programming.   
+ 
+## options to read_csv
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv", skip = 10, col_names = FALSE) 
+#skip first 10 rows, and don't show the column names
+```
+
+```{r}
+litters_data = read_csv(file = "./data/FAS_litters.csv",
+  col_types = "ccddiiii"
+)
+# read the file and make sure the column are in `c`: character, `d`: double, `i`: integer
+```
+
+```{r}
+mean(pull(litters_data, `GD18 weight`), na.rm = TRUE ) 
+#na: missing values
+#exclude the missing valuse and count the mean.
+```
+
+## Other file formats
+
+1. read in an excel file.
+```{r}
+library(readxl)
+mlb_df = read_excel("./data/mlb11.xlsx")
+
+#Read the excel file from A1 to E7
+mlb_df = read_excel("./data/mlb11.xlsx", range = "A1:F7")
+```
+
+2. Read in an SAS file.
+```{r}
+library(haven)
+pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
+```
+
+## Comparison with Base R
+
+`read.csv` vs `read_csv`? Never ever use `read.csv` !!!
+- `read.csv` is the most recent version of R, which is easier to manage the data
+
+## Exporting data as csv file
+
+Export the mlb sub-table
+```{r}
+write_csv(mlb_df, "./data/mlb_subtable.csv")
+
+#`write_` function is in `library(readr)`
+# export `mlb_df` dataframe with the name: mlb_subtable.csv
+```
+
