@@ -169,3 +169,22 @@ litters_df = read_csv("./data/FAS_litters.csv", skip = 10, col_names = FALSE) #s
     ## 
     ## ℹ Use `spec()` to retrieve the full column specification for this data.
     ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+## Other fiel formats
+
+1.  read in an excel file.
+
+``` r
+library(readxl)
+mlb_df = read_excel("./data/mlb11.xlsx")
+
+#Read the excel file from A1 to E7
+mlb_df = read_excel("./data/mlb11.xlsx", range = "A1:F7")
+```
+
+2.  Read in an SAS file.
+
+``` r
+library(haven)
+pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
+```
