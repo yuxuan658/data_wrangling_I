@@ -119,3 +119,12 @@ mutate(litters_df,
        weight_change = gd18_weight - gd0_weight, # add a new column equals to gd18_weight - gd0_weight
        group = str_to_lower(group)) # Modify `group` variable and change everything in "group" column to lowercase 
 ```
+
+### _`arrage()`_
+1. rearrange the data: 
+ - arrange by default is ascending; 
+ - change to descending by using: desc()
+```{r eval=FALSE}
+arrange(litters_df, gd0_weight)
+arrange(litters_df, desc(gd0_weight)) 
+```
