@@ -192,4 +192,13 @@ pulse_df = read_sas("./data/public_pulse_data.sas7bdat")
 ## Comparison with Base R
 
 `read.csv` vs `read_csv`? Never ever use `read.csv` !!! - `read.csv` is
-the most racent version of R, which is easier to manage the data
+the most recent version of R, which is easier to manage the data
+
+## Exporting data as csv file
+
+Export the mlb sub-table
+
+``` r
+write_csv(mlb_df, "./data/mlb_subtable.csv")
+#export `mlb_df` dataframe with the name: mlb_subtable.csv
+```
