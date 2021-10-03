@@ -59,3 +59,39 @@ analysis_result %>%
   )
 ```
 
+
+### binding the different tables: bind_rows()
+
+1. first step: import each table
+```{r}
+fellowship_df = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "B3:D6") %>% #read the table
+  mutate(movie = "fellowship_rings") #add a new column named "movie", with movie name "fellowship_rings"
+
+two_towers_df = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "F3:H6") %>%
+  mutate(movie = "two_towers")
+
+return_df = 
+  readxl::read_excel("./data/LotR_Words.xlsx", range = "J3:L6") %>%
+  mutate(movie = "return_king")
+```
+
+2. second step: bind each rows together by using bind_rows() function
+```{r}
+lotr_df = 
+  bind_rows(fellowship_df, two_towers_df, return_df) %>%
+  janitor::clean_names() %>%
+  relocate(movie) %>% #make "movie" to first column
+  pivot_longer(
+    female:male, #combine the variables(columns) from "female" to "male"
+    names_to = "sex", #put the chosen variables' names into a new variable named "sex"
+    values_to = "words" #put the values in the chosen variables into a new variable named "words"
+  )
+```
+
+### Remeber: 
+ - never use `rbinds()`, always use `bind_row()`.
+ - never use `gather()`, always use `pivot_longer()`
+ - never use `spread()`, always use `pivot_wider()`
+
