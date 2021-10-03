@@ -18,7 +18,7 @@ options(tibble.print_min = 5)
 1. read data:
 ```{r}
 pulse_data = 
-  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%  #since this dataset is in the sas file, so use haven pacakge and `read_sas` funcion
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%  #use haven pacakge to read sas file.
   janitor::clean_names()
 pulse_data
 ```
@@ -37,6 +37,25 @@ pulse_data_tidy =
     values_to = "bdi") %>% #put the values from these variables(columns) into a new variable(column) named "bdi"
   relocate(id, visit) %>% 
   mutate(visit = replace(visit, visit == "bl", "00 m"))    #change "bl" in "visit" column to "00m"; `recode()` change observations
+```
+
+#### all together code:
+```{r eval=FALSE}
+pulse_df = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%
+  janitor::clean_names() %>%
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m,
+    names_to = "visit", 
+    names_prefix = "bdi_score_",
+    values_to = "bdi") %>%
+  relocate(visit) %>%
+  mutate(
+    visit = replace(visit, visit == "bl", "00m"),
+    visit = factor(visit)) %>%
+  arrange(id, visit)
+
+print(pulse_df, n = 12)
 ```
 
 ### `pivot_wider()`
@@ -58,7 +77,6 @@ analysis_result %>%
     values_from = "group_mean"
   )
 ```
-
 
 ### binding the different tables: bind_rows()
 
@@ -96,9 +114,11 @@ lotr_df =
  - never use `spread()`, always use `pivot_wider()`
 
 
-## joining datasets
-merge litters_df dataset into pups_df dataset:
-
+### joining datasets
+ - combining three or more datasets is done step-by-step using the same ideas as combining two datasets.   
+ - left_join(): add data from a smaller table y into a larger table x without removing anything from x.
+ 
+merge litters_df dataset into pups_df dataset: since litters_df dataset is smaller
 1. read the datasets
 ```{r}
 litters_df = 
@@ -128,3 +148,5 @@ fas_df =
   relocate(litter_number, dose, day_of_tx)
 ```
 
+ - left_join(): not amenable to the %>% operator, make sure to separate these steps.
+   because it is fundamentally non-linear: two separate datasets are coming together, rather than a single dataset being processed in a step-by-step fashion
