@@ -14,7 +14,7 @@ library(tidyverse)
 options(tibble.print_min = 5)
 ```
 
-### `pivot_longer`
+### `pivot_longer()`
 1. read data:
 ```{r}
 pulse_data = 
@@ -38,3 +38,24 @@ pulse_data_tidy =
   relocate(id, visit) %>% 
   mutate(visit = replace(visit, visit == "bl", "00 m"))    #change "bl" in "visit" column to "00m"; `recode()` change observations
 ```
+
+### `pivot_wider()`
+```{r}
+#makeup a dataframe
+analysis_result =
+  tibble(
+    group = c("treatment", "treatment", "placebo", "placebo"),
+    time = c("pre", "post", "pre", "post"),
+    group_mean = c(4,8,3,6)
+  )
+analysis_result
+
+#extend the dataframe.
+#let the names from variable "time" becomes new variables, and put the values from "group_mean" into the new columns
+analysis_result %>%
+  pivot_wider(
+    names_from = "time",
+    values_from = "group_mean"
+  )
+```
+
