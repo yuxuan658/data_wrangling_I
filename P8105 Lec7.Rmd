@@ -1,0 +1,40 @@
+---
+title: "tidy_data"
+author: "Yuxuan Chen"
+output: github_document
+---
+
+## Lecture 7
+1. Rules for tidy data
+ - Columns are variables; rows are observations   
+ - Combine the columns / separate datasets to rows as much as possible
+ 
+```{r message=FALSE}
+library(tidyverse)
+options(tibble.print_min = 5)
+```
+
+### `pivot_longer`
+1. read data:
+```{r}
+pulse_data = 
+  haven::read_sas("./data/public_pulse_data.sas7bdat") %>%  #since this dataset is in the sas file, so use haven pacakge and `read_sas` funcion
+  janitor::clean_names()
+pulse_data
+```
+
+2. Let's try pivot   
+ - combine all variables (columns) to each id: (wide format to long format)
+ - relocate dataset to let `id` be first column, and `visit` be the second column
+ -extend (add a mutate)
+```{r}
+pulse_data_tidy = 
+  pulse_data %>%
+  pivot_longer(
+    bdi_score_bl:bdi_score_12m, #specify the range of variables(columns) I am interested in
+    names_to = "visit", #put these variables(columns) into a new variable(column) named "visit"
+    names_prefix = "bdi_score_",  #exclude the `bdi_score_` prefix in each case
+    values_to = "bdi") %>% #put the values from these variables(columns) into a new variable(column) named "bdi"
+  relocate(id, visit) %>% 
+  mutate(visit = replace(visit, visit == "bl", "00 m"))    #change "bl" in "visit" column to "00m"; `recode()` change observations
+```
