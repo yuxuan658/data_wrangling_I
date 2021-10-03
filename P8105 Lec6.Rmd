@@ -5,7 +5,7 @@ output: github_document
 ##Lec6 code
 
 1. dplyr package: manage data, included in library(tidyverse).
-1)functions in dplyr will take a tibble as an input and return a tibble as a result
+1) functions in dplyr will take a tibble as an input and return a tibble as a result
 
 ```{r message=FALSE}
 library(tidyverse)
